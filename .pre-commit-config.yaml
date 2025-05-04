@@ -1,0 +1,16 @@
+repos:
+  - repo: https://github.com/psf/black
+    rev: 24.4.2            # Black version
+    hooks:
+      - id: black          # auto‑formats code
+
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.4.3            # Ruff version
+    hooks:
+      - id: ruff           # lints/statically checks Python
+
+  - repo: https://github.com/pre-commit/mirrors-mypy
+    rev: v1.10.0           # mypy version
+    hooks:
+      - id: mypy
+        args: ["--strict"] # type‑checking gate
