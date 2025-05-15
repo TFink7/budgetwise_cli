@@ -1,16 +1,21 @@
+# Pre-Commit Auto Formatting and Linting and Type Checking
 repos:
   - repo: https://github.com/psf/black
-    rev: 24.4.2            # Black version
+    rev: 24.4.2
     hooks:
-      - id: black          # auto‑formats code
+      - id: black
 
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.4.3            # Ruff version
+    rev: v0.4.3
     hooks:
-      - id: ruff           # lints/statically checks Python
+      - id: ruff
 
   - repo: https://github.com/pre-commit/mirrors-mypy
-    rev: v1.10.0           # mypy version
+    rev: v1.10.0
     hooks:
       - id: mypy
-        args: ["--strict"] # type‑checking gate
+        args: ["--strict"]
+        additional_dependencies:
+          - "sqlalchemy>=2.0"
+          - "sqlalchemy[mypy]>=2.0"
+
