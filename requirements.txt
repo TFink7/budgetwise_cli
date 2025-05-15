@@ -1,0 +1,1 @@
+includes sqlalchemy, alembic, psycopg[binary], typer, rich
