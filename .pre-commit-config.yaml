@@ -19,3 +19,5 @@ repos:
           - "sqlalchemy>=2.0"
           - "sqlalchemy[mypy]>=2.0"
           - "alembic>=1.14"
+          - "typer>=0.9.0"
+          - "rich>=13.6.0"
