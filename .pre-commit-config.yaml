@@ -22,3 +22,4 @@ repos:
           - "typer>=0.9.0"
           - "rich>=13.6.0"
           - "pytest>=8.2"
+          - "types-setuptools"

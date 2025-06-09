@@ -1,4 +1,5 @@
 from logging.config import fileConfig
+import os
 
 from sqlalchemy import engine_from_config
 from sqlalchemy import pool
@@ -60,8 +61,20 @@ def run_migrations_online() -> None:
     and associate a connection with the context.
 
     """
+    # Get URL from environment if available, otherwise from config
+    url = os.getenv("DATABASE_URL", config.get_main_option("sqlalchemy.url"))
+
+    # Create a configuration dictionary with the URL
+    configuration = config.get_section(config.config_ini_section)
+    if not url and configuration:
+        url = configuration.get("sqlalchemy.url")
+    if not url:
+        raise Exception("No database URL configured for Alembic")
+
+    configuration = {"url": url}
+
     connectable = engine_from_config(
-        config.get_section(config.config_ini_section, {}),
+        configuration,
         prefix="sqlalchemy.",
         poolclass=pool.NullPool,
     )
