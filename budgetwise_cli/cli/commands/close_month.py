@@ -30,7 +30,7 @@ def _validate_year_month(
 
 
 @app.command()
-def run(
+def close_month(
     year_month: str = typer.Option(
         date.today().strftime("%Y-%m"),
         "--month",
