@@ -37,7 +37,7 @@ def test_move_between_envelopes(budget_service: BudgetService, db: Session) -> N
     groceries_tx = (
         db.query(m.Transaction)
         .filter(
-            m.Transaction.envelope.name == "Groceries",
+            m.Transaction.envelope.has(m.Envelope.name == "Groceries"),
             m.Transaction.type == m.TransactionType.EXPENSE,
         )
         .one()
@@ -46,7 +46,7 @@ def test_move_between_envelopes(budget_service: BudgetService, db: Session) -> N
     salary_tx = (
         db.query(m.Transaction)
         .filter(
-            m.Transaction.envelope.name == "Salary",
+            m.Transaction.envelope.has(m.Envelope.name == "Salary"),
             m.Transaction.type == m.TransactionType.INCOME,
         )
         .one()
