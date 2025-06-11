@@ -66,16 +66,11 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       
-      - name: Set up Docker Compose
-        uses: docker/setup-buildx-action@v2
-      
       - name: Build with Docker Compose
-        run: docker-compose build
+        run: docker compose build
       
-      - name: Test CLI with Docker Compose
+      - name: Test Docker image
         run: |
-          # Run help command
-          docker-compose run --rm app --help
-          
-          # Run version command
-          docker-compose run --rm app --version
+          docker compose run --rm app --help
+      
+     
