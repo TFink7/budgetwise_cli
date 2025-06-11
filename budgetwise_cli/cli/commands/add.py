@@ -8,11 +8,12 @@ app = typer.Typer()
 
 
 @app.command()
-def add(env: str, amount: Decimal, note: str = "") -> None:
+def add(env: str, amount: str, note: str = "") -> None:
     # Add income or expense into an envelope
     try:
+        decimal_amount = Decimal(amount)
         with get_session() as db:
-            tx = BudgetService(db).add_transaction(env, amount, note)
+            tx = BudgetService(db).add_transaction(env, decimal_amount, note)
         rprint(
             f"Added transaction: [bold]{tx.type.value}[/bold] of [bold]{tx.amount}[/bold] to envelope [bold]{tx.envelope.name}[/bold]"
         )
