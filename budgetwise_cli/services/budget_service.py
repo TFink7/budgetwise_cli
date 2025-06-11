@@ -35,8 +35,8 @@ class BudgetService:
         self.db.flush()
         return tx
 
+    # Transfer money between envelopes if budget changes are needed
     def move(self, src: str, dst: str, amount: Decimal) -> None:
-        # Transfer money between envelopes if budget changes are needed
         if amount <= 0:
             raise ValueError("Amount must be positive")
         self.add_transaction(src, -amount, f"transfer to {dst}")

@@ -40,6 +40,8 @@ class Envelope(Base):
     budget: Mapped[Decimal] = mapped_column(Numeric(12, 2), default=Decimal("0"))
     created_at: Mapped[date] = mapped_column(Date, default=date.today)
 
+    transactions: Mapped[list["Transaction"]] = relationship(back_populates="envelope")
+
 
 class Transaction(Base):
     __tablename__ = "transactions"
