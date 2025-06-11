@@ -4,9 +4,11 @@ ENV PYTHONDONTWRITEBYTECODE=1 PYTHONUNBUFFERED=1
 
 WORKDIR /app
 
-COPY requirements.txt /app/
+COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-COPY budgetwise_cli /app/budgetwise_cli
+COPY . .
+
+RUN pip install --no-cache-dir -e .
 
 ENTRYPOINT ["python", "-m", "budgetwise_cli.cli.app"]
