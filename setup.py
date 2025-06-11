@@ -9,6 +9,7 @@ setup(
         "sqlalchemy>=2.0",
         "alembic>=1.14",
         "psycopg[binary]>=3.1",
+        "psycopg2-binary>=2.9.9",
         "typer>=0.12",
         "rich>=13.7",
     ],
