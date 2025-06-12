@@ -59,7 +59,6 @@ def run_migrations_online() -> None:
 
     In this scenario we need to create an Engine
     and associate a connection with the context.
-
     """
     # Get URL from environment if available, otherwise from config
     url = os.getenv("DATABASE_URL", config.get_main_option("sqlalchemy.url"))
@@ -71,7 +70,7 @@ def run_migrations_online() -> None:
     if not url:
         raise Exception("No database URL configured for Alembic")
 
-    configuration = {"url": url}
+    configuration = {"sqlalchemy.url": url}
 
     connectable = engine_from_config(
         configuration,

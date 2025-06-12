@@ -71,7 +71,18 @@ def test_empty_report(budget_service: BudgetService, db: Session) -> None:
     assert len(report) == 0
 
 
+# Test that providing an invalid date range raises an error.
+
+
+def test_invalid_date_report(budget_service: BudgetService) -> None:
+
+    with pytest.raises(ValueError):
+        budget_service.report(date(2024, 3, 15), date(2024, 3, 1))
+
+
 # test report with transactions
+
+
 def test_report_with_transactions(budget_service: BudgetService, db: Session) -> None:
     start_date = date(2024, 2, 1)
     end_date = date(2024, 2, 29)
@@ -126,6 +137,20 @@ def test_close_month(budget_service: BudgetService, db: Session) -> None:
     assert april_report["Groceries"] == Decimal("-150.00")
     assert april_report["Leisure"] == Decimal("-100.00")
     assert april_report["Salary"] == Decimal("3000.00")
+
+
+# Test closing a month that's already been closed.
+def test_closing_already_closed_month(
+    budget_service: BudgetService, db: Session
+) -> None:
+
+    # First close
+    budget_service.close_month(2024, 5)
+    db.commit()
+
+    # Second close should fail
+    with pytest.raises(ValueError):
+        budget_service.close_month(2024, 5)
 
 
 # test getting or creating an envelope
