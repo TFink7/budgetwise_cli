@@ -11,4 +11,4 @@ COPY . .
 
 RUN pip install --no-cache-dir -e .
 
-ENTRYPOINT ["python", "-m", "budgetwise_cli.cli.app"]
+CMD ["python", "-m", "budgetwise_cli.cli.app"]
