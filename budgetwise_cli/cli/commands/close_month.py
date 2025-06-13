@@ -5,7 +5,7 @@ from budgetwise_cli.infra.db import get_session
 from budgetwise_cli.services.budget_service import BudgetService
 from rich import print as rprint
 
-app = typer.Typer()
+app = typer.Typer(help="Close a month and roll over balances")
 
 
 def _validate_year_month(
@@ -39,6 +39,15 @@ def close_month(
         callback=_validate_year_month,
     )
 ) -> None:
+    """Close a month and roll over balances.
+
+    Format: close-month --month YYYY-MM
+
+    Examples:
+      close-month                 # Close current month
+      close-month --month 2025-06 # Close June 2025
+      close-month -m 2025-05      # Close May 2025 (short option)
+    """
     year_month_tuple = cast(tuple[int, int], year_month)
     year_num, month_num = year_month_tuple
     try:

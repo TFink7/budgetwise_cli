@@ -6,7 +6,7 @@ from rich.console import Console
 from budgetwise_cli.infra.db import get_session
 from budgetwise_cli.services.budget_service import BudgetService
 
-app = typer.Typer()
+app = typer.Typer(help="Generate financial reports")
 console = Console()
 
 
@@ -23,6 +23,15 @@ def month(
         date.today().strftime("%Y-%m"), help="Month to report (YYYY-MM)"
     )
 ) -> None:
+    """Generate a monthly budget report.
+
+    Format: month [YYYY-MM]
+
+    Examples:
+      month            # Current month
+      month 2025-06    # June 2025
+      month 2024-12    # December 2024
+    """
     # Generate a report of envelope balances for a specific month
     year_num, month_num = map(int, month.split("-"))
     first = date(year_num, month_num, 1)

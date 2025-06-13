@@ -4,11 +4,20 @@ from rich import print as rprint
 from budgetwise_cli.services.budget_service import BudgetService
 from budgetwise_cli.infra.db import get_session
 
-app = typer.Typer()
+app = typer.Typer(help="Add a transaction to an envelope")
 
 
 @app.command()
 def add(env: str, amount: str, note: str = "") -> None:
+    """Add a transaction to an envelope.
+
+    Format: add <envelope> <amount> [note]
+
+    Examples:
+      add Groceries 50.00 "Weekly shopping"
+      add Salary 1500.00 "Monthly income"
+      add Entertainment 25.50
+    """
     # Add income or expense into an envelope
     try:
         decimal_amount = Decimal(amount)

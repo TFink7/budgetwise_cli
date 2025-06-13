@@ -5,9 +5,15 @@ from typing import List
 
 
 def start_services() -> None:
-    # Start the budgetwise services using Docker Compose.
+    """Start the budgetwise services using Docker Compose."""
     print("Starting budgetwise services...")
     subprocess.run(["docker", "compose", "up", "-d"], check=True)
+
+
+def shutdown_services() -> None:
+    """Stop all budgetwise services."""
+    print("Shutting down services...")
+    subprocess.run(["docker", "compose", "down"], check=True)
 
 
 def run_command(cmd: str) -> subprocess.CompletedProcess[bytes]:
@@ -29,7 +35,7 @@ def run_command(cmd: str) -> subprocess.CompletedProcess[bytes]:
 
 
 def interactive_shell() -> None:
-    # Run an interactive budgetwise shell.
+    """Run an interactive budgetwise shell."""
     print("Welcome to BudgetWise Interactive Shell!")
     print("Type 'exit' to quit, 'help' for available commands.")
 
@@ -51,5 +57,8 @@ def interactive_shell() -> None:
 
 
 if __name__ == "__main__":
-    start_services()
-    interactive_shell()
+    try:
+        start_services()
+        interactive_shell()
+    finally:
+        shutdown_services()
