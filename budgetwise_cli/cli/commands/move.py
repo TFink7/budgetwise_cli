@@ -1,15 +1,11 @@
 import typer
 from decimal import Decimal
 from rich import print as rprint
-
 from budgetwise_cli.infra.db import get_session
 from budgetwise_cli.services.budget_service import BudgetService
 
-app = typer.Typer()
 
-
-@app.command()
-def move(src: str, dst: str, amount: str) -> None:
+def move_funds(src: str, dst: str, amount: str) -> None:
     """Move money between envelopes.
 
     Format: move <source> <destination> <amount>
@@ -19,7 +15,6 @@ def move(src: str, dst: str, amount: str) -> None:
       move Savings Emergency 500.00
       move Entertainment Bills 25.00
     """
-    # Transfer money
     try:
         decimal_amount = Decimal(amount)
 

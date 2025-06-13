@@ -5,8 +5,6 @@ from budgetwise_cli.infra.db import get_session
 from budgetwise_cli.services.budget_service import BudgetService
 from rich import print as rprint
 
-app = typer.Typer()
-
 
 def _validate_year_month(
     ctx: typer.Context, param: typer.CallbackParam, value: str
@@ -29,7 +27,6 @@ def _validate_year_month(
             raise typer.BadParameter("Input in format YYYY-MM") from None
 
 
-@app.command()
 def close_month(
     year_month: str = typer.Option(
         date.today().strftime("%Y-%m"),
