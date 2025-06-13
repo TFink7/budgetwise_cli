@@ -4,7 +4,17 @@ import enum
 from datetime import date, datetime
 from decimal import Decimal
 
-from sqlalchemy import Date, DateTime, Enum, ForeignKey, Numeric, String
+from sqlalchemy import (
+    Column,
+    Date,
+    DateTime,
+    Enum,
+    ForeignKey,
+    Integer,
+    Numeric,
+    String,
+    UniqueConstraint,
+)
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship
 
 # ---------------------------------------------------------------------------
@@ -53,3 +63,13 @@ class Transaction(Base):
     note: Mapped[str | None] = mapped_column(String(128))
     ts: Mapped[datetime] = mapped_column(DateTime, default=datetime.now)
     envelope: Mapped["Envelope"] = relationship(back_populates="transactions")
+
+
+class ClosedMonth(Base):
+    __tablename__ = "closed_months"
+
+    id = Column(Integer, primary_key=True)
+    year = Column(Integer, nullable=False)
+    month = Column(Integer, nullable=False)
+
+    __table_args__ = (UniqueConstraint("year", "month", name="uq_closed_month"),)

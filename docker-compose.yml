@@ -5,7 +5,7 @@ services:
     build:
       context: .
     environment:
-      - DATABASE_URL=postgresql://postgres:postgres@db:5432/budgetwise
+      - DATABASE_URL=postgresql://postgres:pass@db:5432/budgetwise
     depends_on:
       - db
 

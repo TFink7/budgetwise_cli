@@ -44,6 +44,12 @@ class BudgetService:
 
     # Date reporting and monthly management
     def report(self, start: date, end: date) -> dict[str, Decimal]:
+        if not isinstance(start, date) or not isinstance(end, date):
+            raise ValueError("Start and end must be date objects")
+        if start > end:
+            raise ValueError(f"Start date {start} cannot be after end date {end}")
+
+        # Get balances for each envelope within the date range
         stmt = (
             select(m.Envelope.name, func.sum(m.Transaction.amount))
             .join(m.Transaction)
@@ -56,10 +62,21 @@ class BudgetService:
         }
 
     def close_month(self, year: int, month: int) -> None:
-        # Roll envelopes over to next month
+        # Check if the month is already closed
+        closed_month = (
+            self.db.query(m.ClosedMonth).filter_by(year=year, month=month).first()
+        )
+
+        if closed_month:
+            raise ValueError(f"Month {year}-{month} has already been closed")
+
+        # roll over balances to the next month
         first = date(year, month, 1)
         last = date(year, month, monthrange(year, month=1)[1])
         balances = self.report(first, last)
+
+        # Record this month as closed
+        self.db.add(m.ClosedMonth(year=year, month=month))
 
         for env, bal in balances.items():
             if bal == 0:
