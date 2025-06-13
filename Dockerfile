@@ -11,4 +11,4 @@ COPY . .
 
 RUN pip install --no-cache-dir -e .
 
-CMD ["python", "-m", "budgetwise_cli.cli.app"]
+CMD ["tail", "-f", "/dev/null"]
