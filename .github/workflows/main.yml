@@ -70,7 +70,7 @@ jobs:
         run: docker compose build
       
       - name: Test Docker image
-        run: |
-          docker compose run --rm app --help
+        run: docker compose run --rm app python -m budgetwise_cli.cli.app --help
+          
       
      
