@@ -5,7 +5,7 @@ from budgetwise_cli.infra.db import get_session
 from budgetwise_cli.services.budget_service import BudgetService
 from rich import print as rprint
 
-app = typer.Typer(help="Close a month and roll over balances")
+app = typer.Typer()
 
 
 def _validate_year_month(

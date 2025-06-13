@@ -4,7 +4,7 @@ from rich import print as rprint
 from budgetwise_cli.services.budget_service import BudgetService
 from budgetwise_cli.infra.db import get_session
 
-app = typer.Typer(help="Add a transaction to an envelope")
+app = typer.Typer()
 
 
 @app.command()

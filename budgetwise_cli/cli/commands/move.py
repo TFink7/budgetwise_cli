@@ -5,7 +5,7 @@ from rich import print as rprint
 from budgetwise_cli.infra.db import get_session
 from budgetwise_cli.services.budget_service import BudgetService
 
-app = typer.Typer(help="Move money between envelopes")
+app = typer.Typer()
 
 
 @app.command()

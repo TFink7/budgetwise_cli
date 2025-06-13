@@ -6,7 +6,7 @@ from rich.console import Console
 from budgetwise_cli.infra.db import get_session
 from budgetwise_cli.services.budget_service import BudgetService
 
-app = typer.Typer(help="Generate financial reports")
+app = typer.Typer()
 console = Console()
 
 
