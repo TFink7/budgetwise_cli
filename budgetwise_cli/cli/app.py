@@ -3,16 +3,21 @@ from .commands import add, move, report, close_month
 
 app = typer.Typer(help="BudgetWise envelope budgeting")
 
-# Register commands directly, but import implementations
+# Use the actual function names from your modules:
 app.command(
-    help="Add a transaction to an envelope. • Format: add <envelope> <amount> [note]"
-)(add.add_transaction)
+    name="add",
+    help="Add a transaction to an envelope. • Format: add <envelope> <amount> [note]",
+)(add.add)
+
 app.command(
-    help="Move money between envelopes. • Format: move <source> <destination> <amount>"
-)(move.move_funds)
-app.command(help="Generate financial reports. • Format: report [YYYY-MM]")(
-    report.generate_report
-)
+    name="move",
+    help="Move money between envelopes. • Format: move <source> <destination> <amount>",
+)(move.move)
+
+app.command(
+    name="report", help="Generate financial reports. • Format: report [YYYY-MM]"
+)(report.report)
+
 app.command(
     name="close-month",
     help="Close a month and roll balances. • Format: close-month <year> <month>",

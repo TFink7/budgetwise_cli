@@ -15,7 +15,7 @@ def parse_date(val: str) -> date:
         raise typer.BadParameter("Date must be in YYYY-MM-DD format") from None
 
 
-def generate_report(
+def report(
     month: str = typer.Argument(
         date.today().strftime("%Y-%m"), help="Month to report (YYYY-MM)"
     )

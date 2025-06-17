@@ -5,7 +5,7 @@ from budgetwise_cli.services.budget_service import BudgetService
 from budgetwise_cli.infra.db import get_session
 
 
-def add_transaction(env: str, amount: str, note: str = "") -> None:
+def add(env: str, amount: str, note: str = "") -> None:
     """Add a transaction to an envelope.
 
     Format: add <envelope> <amount> [note]

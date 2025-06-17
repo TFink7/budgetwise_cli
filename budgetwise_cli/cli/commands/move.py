@@ -5,7 +5,7 @@ from budgetwise_cli.infra.db import get_session
 from budgetwise_cli.services.budget_service import BudgetService
 
 
-def move_funds(src: str, dst: str, amount: str) -> None:
+def move(src: str, dst: str, amount: str) -> None:
     """Move money between envelopes.
 
     Format: move <source> <destination> <amount>
