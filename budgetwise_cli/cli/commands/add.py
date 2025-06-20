@@ -1,11 +1,15 @@
 import typer
 from decimal import Decimal
 from rich import print as rprint
-from budgetwise_cli.services.budget_service import BudgetService
 from budgetwise_cli.infra.db import get_session
+from budgetwise_cli.services.budget_service import BudgetService
 
 
-def add(env: str, amount: str, note: str = "") -> None:
+def add(
+    env: str = typer.Argument(..., help="Envelope name"),
+    amount: str = typer.Argument(..., help="Transaction amount"),
+    note: str = typer.Argument("", help="Optional transaction note"),
+) -> None:
     """Add a transaction to an envelope.
 
     Format: add <envelope> <amount> [note]

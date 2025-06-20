@@ -61,7 +61,9 @@ def run_migrations_online() -> None:
     and associate a connection with the context.
     """
     # Get URL from environment if available, otherwise from config
-    url = os.getenv("DATABASE_URL", config.get_main_option("sqlalchemy.url"))
+    url = config.get_main_option("sqlalchemy.url")
+    if not url:
+        url = os.getenv("DATABASE_URL")
 
     # Create a configuration dictionary with the URL
     configuration = config.get_section(config.config_ini_section)

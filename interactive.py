@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 import subprocess
 import shlex
+import time
 from typing import List
 
 
@@ -8,6 +9,23 @@ def start_services() -> None:
     """Start the budgetwise services using Docker Compose."""
     print("Starting budgetwise services...")
     subprocess.run(["docker", "compose", "up", "-d"], check=True)
+    # Give the database a moment to initialize
+    time.sleep(2)
+
+
+def run_migrations() -> None:
+    """Run database migrations."""
+    print("Running database migrations...")
+    result = subprocess.run(
+        ["docker", "compose", "exec", "app", "alembic", "upgrade", "head"],
+        check=False,
+        capture_output=True,
+        text=True,
+    )
+    if result.returncode == 0:
+        print("✓ Database migrations completed successfully")
+    else:
+        print(f"⚠ Migration warning: {result.stderr}")
 
 
 def shutdown_services() -> None:
@@ -59,6 +77,7 @@ def interactive_shell() -> None:
 if __name__ == "__main__":
     try:
         start_services()
+        run_migrations()
         interactive_shell()
     finally:
         shutdown_services()
