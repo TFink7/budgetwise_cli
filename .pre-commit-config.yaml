@@ -9,6 +9,7 @@ repos:
     rev: v0.4.3
     hooks:
       - id: ruff
+        exclude: ^budgetwise_cli/infra/migrations/versions/.*\.py$
 
   - repo: https://github.com/pre-commit/mirrors-mypy
     rev: v1.10.0

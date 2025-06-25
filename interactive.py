@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 import subprocess
 import shlex
-import time
 from typing import List
 
 
@@ -9,27 +8,104 @@ def start_services() -> None:
     """Start the budgetwise services using Docker Compose."""
     print("Starting budgetwise services...")
     subprocess.run(["docker", "compose", "up", "-d"], check=True)
-    # Give the database a moment to initialize
-    time.sleep(2)
 
 
 def run_migrations() -> None:
-    """Run database migrations."""
-    print("Running database migrations...")
-    result = subprocess.run(
-        ["docker", "compose", "exec", "app", "alembic", "upgrade", "head"],
-        check=False,
+    # Check if migrations table exists
+    check_table = subprocess.run(
+        [
+            "docker",
+            "compose",
+            "exec",
+            "db",
+            "psql",
+            "-U",
+            "postgres",
+            "-d",
+            "budgetwise",
+            "-c",
+            "SELECT EXISTS(SELECT 1 FROM information_schema.tables WHERE table_name='alembic_version');",
+        ],
         capture_output=True,
         text=True,
+        check=False,
     )
-    if result.returncode == 0:
-        print("✓ Database migrations completed successfully")
+
+    table_exists = "t" in check_table.stdout.lower()
+
+    # For first run or if table doesn't exist
+    if not table_exists:
+        subprocess.run(
+            [
+                "docker",
+                "compose",
+                "exec",
+                "app",
+                "alembic",
+                "revision",
+                "--autogenerate",
+                "-m",
+                "Initial schema",
+            ],
+            check=False,
+        )
+
+    # Try to run migrations
+    result = subprocess.run(
+        ["docker", "compose", "exec", "app", "alembic", "upgrade", "head"],
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+
+    if "can't locate revision" in result.stderr.lower():
+        subprocess.run(
+            [
+                "docker",
+                "compose",
+                "exec",
+                "db",
+                "psql",
+                "-U",
+                "postgres",
+                "-d",
+                "budgetwise",
+                "-c",
+                "DROP TABLE IF EXISTS alembic_version;",
+            ],
+            check=False,
+        )
+        subprocess.run(
+            [
+                "docker",
+                "compose",
+                "exec",
+                "app",
+                "alembic",
+                "revision",
+                "--autogenerate",
+                "-m",
+                "Fresh start",
+            ],
+            check=False,
+        )
+        upgrade_result = subprocess.run(
+            ["docker", "compose", "exec", "app", "alembic", "upgrade", "head"],
+            capture_output=True,
+            text=True,
+            check=False,
+        )
+        if upgrade_result.returncode == 0:
+            print("Migration history reset")
+        else:
+            print(f"{upgrade_result.stderr}")
+    elif result.returncode == 0:
+        print("Database migrations completed successfully")
     else:
-        print(f"⚠ Migration warning: {result.stderr}")
+        print(f"{result.stderr}")
 
 
 def shutdown_services() -> None:
-    """Stop all budgetwise services."""
     print("Shutting down services...")
     subprocess.run(["docker", "compose", "down"], check=True)
 
@@ -53,7 +129,6 @@ def run_command(cmd: str) -> subprocess.CompletedProcess[bytes]:
 
 
 def interactive_shell() -> None:
-    """Run an interactive budgetwise shell."""
     print("Welcome to BudgetWise Interactive Shell!")
     print("Type 'exit' to quit, 'help' for available commands.")
 

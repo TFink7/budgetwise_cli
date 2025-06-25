@@ -27,7 +27,7 @@ def _validate_year_month(
             raise typer.BadParameter("Input in format YYYY-MM") from None
 
 
-def close_month(
+def cmd_close_month(
     year_month: str = typer.Option(
         date.today().strftime("%Y-%m"),
         "--month",
@@ -50,6 +50,7 @@ def close_month(
     try:
         with get_session() as db:
             BudgetService(db).close_month(year_num, month_num)
+
         rprint(f"Closed month [bold]{year_num}-{month_num:02d}[/bold] successfully")
     except Exception as e:
         typer.echo(f"Error closing month: {str(e)}", err=True)

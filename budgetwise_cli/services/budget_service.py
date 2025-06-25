@@ -72,7 +72,7 @@ class BudgetService:
 
         # roll over balances to the next month
         first = date(year, month, 1)
-        last = date(year, month, monthrange(year, month=1)[1])
+        last = date(year, month, monthrange(year, month)[1])
         balances = self.report(first, last)
 
         # Record this month as closed

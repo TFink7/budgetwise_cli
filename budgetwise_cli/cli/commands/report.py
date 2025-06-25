@@ -36,13 +36,15 @@ def report(
     try:
         with get_session() as db:
             data = BudgetService(db).report(first, last)
+
+            table = Table(title=f"Budget report {month}")
+            table.add_column("Envelope", style="bold")
+            table.add_column("Balance", justify="right", style="green")
+            for key, balance in data.items():
+                name = getattr(key, "name", key)
+                table.add_row(name, f"{float(balance):.2f}")
     except Exception as e:
-        typer.echo(f"Error generating report: {str(e)}", err=True)
+        typer.echo(f"Error: {str(e)}", err=True)
         raise typer.Exit(1)
 
-    table = Table(title=f"Budget report {month}")
-    table.add_column("Envelope", style="bold")
-    table.add_column("Balance", justify="right", style="green")
-    for env, balance in data.items():
-        table.add_row(env, f"{balance:.2f}")
     console.print(table)

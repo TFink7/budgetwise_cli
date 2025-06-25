@@ -1,5 +1,3 @@
-# docker-compose.yml
-
 services:
   app:
     build:
@@ -8,7 +6,8 @@ services:
       - DATABASE_URL=postgresql://postgres:pass@db:5432/budgetwise
     depends_on:
       - db
-
+    volumes:
+      - ./budgetwise_cli/infra/migrations:/app/budgetwise_cli/infra/migrations
 
   db:
     image: postgres:15
