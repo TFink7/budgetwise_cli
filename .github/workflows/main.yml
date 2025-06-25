@@ -22,7 +22,7 @@ jobs:
           python -m pip install --upgrade pip
           pip install -e ".[dev]"  # Install from setup.py with dev extras
       - name: Lint with Black
-        run: black --check .
+        run: black --check --exclude "budgetwise_cli/infra/migrations/" .
       - name: Lint with Ruff
         run: ruff check .
       - name: Type check with MyPy
