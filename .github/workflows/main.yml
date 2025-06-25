@@ -24,7 +24,7 @@ jobs:
       - name: Lint with Black
         run: black --check --exclude "budgetwise_cli/infra/migrations/" .
       - name: Lint with Ruff
-        run: ruff check .
+        run: ruff check --exclude budgetwise_cli/infra/migrations/ .
       - name: Type check with MyPy
         run: mypy budgetwise_cli 
 
